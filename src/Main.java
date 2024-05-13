@@ -1,15 +1,18 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import Banco.Banco;
+import Usuarios.Cliente;
+import Usuarios.Empleado;
+import Usuarios.Utils.Rol;
+import Usuarios.Utils.Sucursales;
+import java.time.LocalDate;
+import Banco.Menu;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
-
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
-        }
+        Banco banco = new Banco();
+        Menu menu = new Menu();
+        Cliente cliente=new Cliente("","","","", LocalDate.now(),"","","", "","", Sucursales.Madero, Rol.Cliente);
+        Empleado empleado1=new Empleado("dorian2k", "dsfosdn", "dorian ferreira", "calderon cla", LocalDate.of(2004,8,30), "morelia", "momomo", "fjfn", "njnjvnsj", "ndjfjnndf", Sucursales.Madero, Rol.Capturista, 30000, LocalDate.now());
+        menu.ejecutarMenuBanco(); //Aquí ejecuto el menu del banco
+        cliente.RegistrarCliente(empleado1);
     }
 }
