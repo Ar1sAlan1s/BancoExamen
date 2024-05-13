@@ -1,1 +1,2 @@
-# Aris GeovannyAlanis Lomeli
+- Aris GeovannyAlanis Lomeli
+- René Antonio Olvera Estrada
