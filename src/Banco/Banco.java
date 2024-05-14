@@ -31,6 +31,16 @@ public class Banco {
         this.ValidacionesYRegistros = new ValidacionesYRegistros();
         listaUsuarios.get(Rol.Gerente).add(Gerente1);
     }
+    public Empleado obtenerGerente() {
+        // Iterar sobre la lista de usuarios con rol de gerente y retornar al primero que encuentre
+        for (Usuario usuario : listaUsuarios.get(Rol.Gerente)) {
+            if (usuario instanceof Empleado) {
+                return (Empleado) usuario;
+            }
+        }
+        // Esto NO debe pasar.
+        return null;
+    }
 
     ValidacionesYRegistros ValidacionesYRegistros;
     public void insertarEmpleado(Empleado empleado) {
@@ -105,7 +115,26 @@ public class Banco {
                 System.out.println("************");
             }
         }
+        }
+
+    public Cliente buscarClientePorUsuarioYRFC (String Usuario, String RFC) {
+        for (Cliente cliente : listaCliente.values()) {
+            if (cliente.getUsuario().equals(Usuario) && cliente.getRFC().equals(RFC) && cliente.getRol().equals(Rol.Cliente)) {
+                return cliente;
+            }
+        }
+        System.out.println("no se ha econtrado el cliente");
+        return null;
     }
 
+    public Empleado BuscarEmpleadoPorUsuarioymasINF(Usuario usuarioactivo){
+        for (Empleado empleado : listaEmpleado.values()) {
+            if (usuarioactivo.getUsuario().equals(empleado.getUsuario()) && usuarioactivo.getRol().equals(empleado.getRol()) && usuarioactivo.getRFC().equals(empleado.getRFC())){
+                return empleado;
+            }
+        }
+        System.out.println("el Usuario activo no es tipo empleado");
+        return null;
+    }
 
 }

@@ -114,26 +114,26 @@ public class ValidacionesYRegistros {
         LocalDate fechaDeNacimiento = null;
 
         while(!fechaValida) {
-            int año = false;
+            boolean año = false;
 
-            int año;
+            int año1=0;
             try {
                 System.out.println("Ingrese su año de nacimiento: (ingrese el año como el siguiente ejemplo: 2004)");
-                año = this.leer.nextInt();
+                año1 = this.leer.nextInt();
             } catch (InputMismatchException var9) {
                 System.out.println("Error: debe ingresar un número entero para el año.");
                 this.leer.nextLine();
                 continue;
             }
 
-            int mes = false;
+            Boolean mes = false;
 
             while(true) {
-                int mes;
+                int mes1=0;
                 try {
                     System.out.println("Ingrese su mes de nacimiento: (ingrese el mes como el siguiente ejemplo: 08)");
-                    mes = this.leer.nextInt();
-                    if (mes < 1 || mes > 12) {
+                    mes1 = this.leer.nextInt();
+                    if (mes1 < 1 || mes1 > 12) {
                         throw new IllegalArgumentException("Mes no válido. Debe ser un número entre 1 y 12.");
                     }
                 } catch (InputMismatchException var10) {
@@ -146,12 +146,12 @@ public class ValidacionesYRegistros {
                     continue;
                 }
 
-                int dia = false;
+                Boolean dia = false;
 
-                int dia;
+                int dia1=0;
                 try {
                     System.out.println("Ingrese su día de nacimiento: ");
-                    dia = this.leer.nextInt();
+                    dia1 = this.leer.nextInt();
                 } catch (InputMismatchException var8) {
                     System.out.println("Error: debe ingresar un número entero para el día.");
                     this.leer.nextLine();
@@ -159,7 +159,7 @@ public class ValidacionesYRegistros {
                 }
 
                 try {
-                    fechaDeNacimiento = LocalDate.of(año, mes, dia);
+                    fechaDeNacimiento = LocalDate.of(año1, mes1, dia1);
                 } catch (DateTimeException var7) {
                     System.out.println("Fecha no válida. Por favor, ingrese una fecha válida.");
                     break;
