@@ -22,7 +22,7 @@ public class Solicitud {
         this.status="En revision";
         cliente.Solicitudes.add(this);
     }
-    public void mostrarSolicitud() {
+    public void mostrarSolicitud(Cliente cliente) {
         System.out.println("Id del solicitante: "+cliente.getId());
         System.out.println("Usuario de solicitante: " + cliente.getUsuario());
         System.out.println("Nombre de solicitante: " + cliente.getNombre() + cliente.getApellidos());

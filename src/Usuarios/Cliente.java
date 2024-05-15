@@ -141,14 +141,17 @@ Cliente extends Usuario {
     }
     public void mostrarTarjetas(){
         System.out.println();
-        this.debito.mostrarTarjeta();
+        if (tarjetasCredito.isEmpty()){
+            System.out.println("No tienes tarjetas de credito");
+        }else{
         for (Credito credito : tarjetasCredito) {
             System.out.println();
             credito.mostrarTarjeta();
         }
+        }
     }
-    public void solicitarTarjetaCredito() {
-        if(!revisarSolicitud()){
+    public void solicitarTarjetaCredito(Cliente cliente) {
+        if(!revisarSolicitud(cliente)){
             System.out.println("Tienes una solicitud pendiente.");
             return;
         }
@@ -208,12 +211,12 @@ Cliente extends Usuario {
             System.out.println("Actualmente no puedes solicitar ninguna tarjeta de credito.");
         }
     }
-    public boolean revisarSolicitud(){
+    public boolean revisarSolicitud(Cliente cliente){
         boolean bandS = true;
         boolean bandP = true;
         boolean bandO = true;
         for (Solicitud solicitud: Solicitudes) {
-            if (solicitud.getStatus().equals("En proceso")) {
+            if (solicitud.getStatus().equals("En proceso")&&solicitud.getIdCliente()==cliente.getId()) {
                 return false;
             }
         }
@@ -225,4 +228,34 @@ Cliente extends Usuario {
             tarjeta.mostrarTarjeta();
         }
     }
+    public void verSolicitudesTarjetaCreditoClientes(Cliente cliente) {
+        if(!Solicitudes.isEmpty()){
+            System.out.println("** Solicitudes de tarjeta **");
+            for (Solicitud solicitud: Solicitudes){
+               if(cliente.getId()==solicitud.getIdCliente()){
+                   System.out.println("Numero de solicitud: "+ Solicitudes.indexOf(solicitud));
+                solicitud.mostrarSolicitud(cliente);
+                System.out.println();
+               }
+            }
+        }else{
+            System.out.println("No tiene solicitudes a la espera");
+        }
+
+    }
+
+    public void verSolicitudesTarjetaCreditoEmpleados(Cliente cliente) {
+        if(!Solicitudes.isEmpty()){
+            System.out.println("** Solicitudes de tarjeta **");
+            for (Solicitud solicitud: Solicitudes){
+                if(solicitud.getStatus().equals("En proceso")&&cliente.getSucursales()==solicitud.getSucursal()){
+                    System.out.println("Numero de solicitud: "+ Solicitudes.indexOf(solicitud));
+                    solicitud.mostrarSolicitud(cliente);
+                    System.out.println();
+                }
+            }
+        }
+
+    }
+
 }
