@@ -73,13 +73,13 @@ public class Empleado extends Usuario {
             Banco.listaUsuarios.put(Rol.Capturista, new ArrayList<>());
         }
         Banco.listaUsuarios.get(Rol.Capturista).add(Ejecutivo);
-        System.out.println("Ejecutivo registrado exitosamente.");
+        System.out.println("Capturista registrado exitosamente.");
 
     }
 
     public void revisarSolicitudes() {
         boolean band = true;
-        System.out.println("Estas son las solicitudes hasta ahora");
+        System.out.println("Estas son las solicitudes hasta ahora: ");
         for (int i = 0; i < cliente.Solicitudes.size(); i++) {
             System.out.println((i + 1) + " " + cliente.Solicitudes.get(i));
         }
@@ -119,7 +119,7 @@ public class Empleado extends Usuario {
     public static void MostrarEjecutivos(Sucursales sucursales) {
         synchronized (listaUsuarios) {
             boolean EjecutivosEncontrados = false;
-            System.out.println("Clientes de la sucursal " + sucursales + ":");
+            System.out.println("Ejecutivos de la sucursal " + sucursales + ":");
             for (ArrayList<Usuario> userList : listaUsuarios.values()) {
                 for (Usuario usuario : userList) {
                     if (usuario instanceof Empleado) {
@@ -133,7 +133,7 @@ public class Empleado extends Usuario {
                 }
             }
             if (!EjecutivosEncontrados) {
-                System.out.println("No se encontraron clientes en la sucursal " + sucursales + ".");
+                System.out.println("No se encontraron ejecutivos en la sucursal " + sucursales + ".");
             }
         }
     }

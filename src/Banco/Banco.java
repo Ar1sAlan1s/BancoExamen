@@ -1,4 +1,5 @@
 package Banco;
+import Banco.Utils.HistorialTransaccion;
 import Usuarios.Empleado;
 import Usuarios.Usuario;
 import Usuarios.Utils.Rol;
@@ -30,5 +31,31 @@ public class Banco {
             }
         }
         return null;
+    }
+    public static Usuario buscarUsuarioPorNombreUsuario(String nombreUsuario) {
+        // Itera sobre todas las listas de usuarios en el HashMap
+        for (ArrayList<Usuario> userList : listaUsuarios.values()) {
+            // Itera sobre los usuarios en la lista actual
+            for (Usuario usuario : userList) {
+                // Comprueba si el usuario actual tiene el nombre de usuario buscado
+                if (usuario.getUsuario().equals(nombreUsuario)) {
+                    return usuario; // Retorna el usuario si se encuentra
+                }
+            }
+        }
+        return null; // Retorna null si no se encuentra ningún usuario con ese nombre de usuario
+    }
+    public static void agregarFondos(double monto, Usuario usuario, LocalDate fecha) {
+        if (usuario.getRol() == Rol.Inversionista) {
+            FondoDedinero += monto; // Aumenta el fondo total del banco
+            // Registra la transacción en el historial
+            String nombreUsuario = usuario.getUsuario();
+            String RFC = usuario.getRFC();
+            String detalle = "Inversionista " + nombreUsuario + " agregó fondos por $" + monto;
+            HistorialTransaccion.registrarTransaccion(detalle, nombreUsuario, RFC, fecha, usuario.getSucursales());
+            System.out.println("Fondos agregados exitosamente.");
+        } else {
+            System.out.println("Solo los inversionistas pueden agregar fondos.");
+        }
     }
 }

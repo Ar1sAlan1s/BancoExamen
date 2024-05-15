@@ -5,10 +5,7 @@ import Tarjetas.Credito;
 import Tarjetas.Debito;
 import Usuarios.Cliente;
 import Usuarios.Empleado;
-import Usuarios.Inversionista;
 import Usuarios.Usuario;
-import Usuarios.Utils.Rol;
-import Usuarios.Utils.Sucursales;
 import Usuarios.Utils.UsuarioActivo;
 
 import java.time.LocalDate;
@@ -21,13 +18,7 @@ public class Menu {
     private Debito debito;
     private Credito credito;
     private String contraseñaSeguridad = "B@nc0";
-    private Empleado empleado = new Empleado("", "", "", "", LocalDate.of(2004,8,30), "", "", "", "", "", Sucursales.Madero, Rol.Capturista, 30000, LocalDate.now());
-    private Inversionista inversionista = new Inversionista("", "", "", "", LocalDate.of(2004,8,30), "", "", "", "", "", Sucursales.Madero, Rol.Inversionista, 30000);
     private Usuario usuarioActual;
-    private Empleado Gerente;
-    private Empleado Ejecutivo;
-    private Empleado Capturista;
-
 
     //Verificar el inicio de sesión
     public void iniciarSesion() {
@@ -184,7 +175,7 @@ public class Menu {
                         System.out.println("2.-Capturista.");
                         System.out.println("3.-Ejecutivo.");
                         System.out.println("4.-Inversionista.");
-                        System.out.println("5.-Salir de la modificación.");
+                        System.out.println("5.-Salir.");
                         System.out.println("Seleccione una opción: ");
 
                         opcionRegistrar = Herramientas.nextInt();
@@ -226,7 +217,7 @@ public class Menu {
                         System.out.println("2.-Capturista.");
                         System.out.println("3.-Ejecutivo.");
                         System.out.println("4.-Inversionista.");
-                        System.out.println("5.-Salir");
+                        System.out.println("5.-Salir.");
                         System.out.println("Seleccione una opcion: ");
 
                         opcionEliminar = Herramientas.nextInt();
@@ -278,7 +269,7 @@ public class Menu {
 
                         switch (opcionModificar){
                             case 1:
-
+                                
                                 break;
                             case 2:
 
@@ -307,12 +298,11 @@ public class Menu {
                         System.out.println("2.-Capturista.");
                         System.out.println("3.-Ejecutivo.");
                         System.out.println("4.-Inversionista.");
-                        System.out.println("5.- Mostrar todos los empleados");
-                        System.out.println("5.-Salir.");
+                        System.out.println("5.- Mostrar todos los empleados.");
+                        System.out.println("6.-Salir.");
                         System.out.println("Seleccione una opción: ");
 
                         opcionMostrar = Herramientas.nextInt();
-
 
                         switch (opcionMostrar){
                             case 1:
@@ -339,7 +329,7 @@ public class Menu {
                     }while(opcionMostrar != 6);
                     break;
                 case 5:
-                    empleado.revisarSolicitudes();
+
                     break;
                 case 6:
 
@@ -408,13 +398,13 @@ public class Menu {
 
             switch(opcionCapturistas){
                 case 1:
-
+                    Empleado.RegistrarEjecutivo(usuarioActual);
                     break;
                 case 2:
 
                     break;
                 case 3:
-
+                    Empleado.MostrarTodosEmpleados(UsuarioActivo.getInstance().getUsuarioActual().getSucursales());
                     break;
                 case 4:
                     System.out.println("\nCerrando la sesión actual. Redireccionando al inicio de sesión.");
