@@ -29,7 +29,7 @@ public class Debito extends Tarjeta {
                 double dineroRetirado = this.scan.nextDouble();
                 if (dineroRetirado <= this.getSaldo()) {
                     this.setSaldo(this.getSaldo() - dineroRetirado);
-                    this.band = false;
+                    break;
                 } else {
                     System.out.println("No tienes el suficiente dinero");
                 }
