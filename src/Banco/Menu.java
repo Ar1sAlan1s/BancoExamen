@@ -12,6 +12,7 @@ import Usuarios.Utils.Sucursales;
 import Usuarios.Utils.UsuarioActivo;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Scanner;
 
 public class Menu {
@@ -69,15 +70,9 @@ public class Menu {
         Cliente cliente = (Cliente) UsuarioActivo.getUsuarioActual();
 
         do {
-            System.out.println("MENU CLIENTE");
-            System.out.println("1.-Retirar dinero.");
-            System.out.println("2.-Agregar dinero.");
-            System.out.println("3.-Verificar estados de solicitudes.");
-            if(cliente.debito.getSaldo()>=50000) {
-                System.out.println("4.-Solicitar Tarjeta de crédito.");
-            }
-            System.out.println("5.- Ver saldo actual de la Tarjeta de debito");
-            System.out.println("6.-Cerrar sesión Actual.");
+            System.out.println("1.-Debito.");
+            System.out.println("2.-Credito.");
+            System.out.println("3.-Cerrar sesión Actual.");
             System.out.println("Seleccione algo de la lista por favor: ");
 
             opcionCliente = Herramientas.nextInt();
@@ -86,9 +81,10 @@ public class Menu {
                 case 1:
                     int opcionDeRetiro = 0;
                     do{
-                        System.out.println("Usted a seleccionado retirar dinero.");
-                        System.out.println("1.-Retirar de Debito.");
-                        System.out.println("2.-Retirar de Crédito.");
+                        System.out.println("Que desea hacer con debito");
+                        System.out.println("1.-Agregar a Debito");
+                        System.out.println("2.-Retirar de Debito.");
+                        System.out.println("3.-Mostrar datos de la tarjeta de debito.");
                         System.out.println("4.-Regresar al menú principal.");
                         System.out.println("Elija una de las opciones: ");
 
@@ -96,18 +92,25 @@ public class Menu {
 
                         switch (opcionDeRetiro){
                             case 1:
-                                cliente.debito.retirarDinero();
+                                cliente.debito.agregarDinero();
+                                cliente.debito.setHoraDeUltimoMovimiento(LocalTime.now());
+                                cliente.debito.setFechaDeUltimoMovimiento(LocalDate.now());
                                 break;
                             case 2:
-//                                cliente1.tarjetasCredito.get(1).;
+                                cliente.debito.retirarDinero(cliente);
+                                cliente.debito.setHoraDeUltimoMovimiento(LocalTime.now());
+                                cliente.debito.setFechaDeUltimoMovimiento(LocalDate.now());
                                 break;
                             case 3:
+                                cliente.debito.mostrarTarjeta();
+                                break;
+                            case 4:
                                 System.out.println("Volviendo al menú principal. . .");
                                 break;
                             default:
                                 System.out.println("Opción no valida.");
                         }
-                    }while(opcionDeRetiro != 3);
+                    }while(opcionDeRetiro != 4);
                     break;
                 case 2:
                     int opcionDeAgrego;

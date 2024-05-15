@@ -2,6 +2,7 @@ package Tarjetas;
 
 import Tarjetas.Utils.TiposCredito;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -17,7 +18,7 @@ public class Tarjeta {
     protected long Clabe;
     protected LocalDate fechaDeVencimiento;
     protected LocalDate fechaDeUltimoMovimiento;
-    protected LocalDate HoraDeUltimoMovimiento;
+    protected LocalTime HoraDeUltimoMovimiento;
     Random rand;
 
     public Tarjeta(String usurio, String password, TiposCredito tipo) {
@@ -32,7 +33,7 @@ public class Tarjeta {
         this.Clabe = this.crearClabe();
         this.fechaDeVencimiento = LocalDate.now().plusYears(5L);
         this.fechaDeUltimoMovimiento = LocalDate.now();
-        this.HoraDeUltimoMovimiento = LocalDate.now();
+        this.HoraDeUltimoMovimiento = LocalTime.now();
     }
 
     public long crearNumeroDeTarjeta() {
@@ -99,7 +100,7 @@ public class Tarjeta {
         return this.fechaDeUltimoMovimiento;
     }
 
-    public LocalDate getHoraDeUltimoMovimiento() {
+    public LocalTime getHoraDeUltimoMovimiento() {
         return this.HoraDeUltimoMovimiento;
     }
 
@@ -111,7 +112,7 @@ public class Tarjeta {
         this.fechaDeUltimoMovimiento = fechaDeUltimoMovimiento;
     }
 
-    public void setHoraDeUltimoMovimiento(LocalDate horaDeUltimoMovimiento) {
+    public void setHoraDeUltimoMovimiento(LocalTime horaDeUltimoMovimiento) {
         this.HoraDeUltimoMovimiento = horaDeUltimoMovimiento;
     }
 }
