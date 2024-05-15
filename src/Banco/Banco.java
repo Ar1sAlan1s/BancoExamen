@@ -3,15 +3,15 @@ import Usuarios.Empleado;
 import Usuarios.Usuario;
 import Usuarios.Utils.Rol;
 import Usuarios.Utils.Sucursales;
-import Usuarios.Utils.UsuarioActivo;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
-import java.util.Random;
+import Usuarios.Cliente;
 
 public class Banco {
     public static Scanner leer = new Scanner(System.in);
+    public static final ArrayList<Cliente> ListaClientes=new ArrayList<>();
     public static final HashMap<Rol, ArrayList<Usuario>> listaUsuarios = new HashMap<>(){{
         put(Rol.Gerente, new ArrayList<>());}};
     public static double FondoDedinero = 0;
