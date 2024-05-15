@@ -7,7 +7,6 @@ import Usuarios.Utils.Rol;
 import Usuarios.Utils.Sucursales;
 import Tarjetas.Tarjeta;
 import Usuarios.Utils.UsuarioActivo;
-
 import java.time.LocalDate;
 import java.util.*;
 import static Banco.Banco.listaUsuarios;
@@ -26,8 +25,8 @@ Cliente extends Usuario {
     public ArrayList<Tarjeta> tarjetasCredito;
     private ArrayList<Integer> idsGenerados = new ArrayList<>();
 
-    public Cliente( String nombre, String apellidos, LocalDate fechaNacimiento,String usuario, String password, String ciudad, String estado, String RFC, String Curp, String direccion, Sucursales sucursales, Rol rol) {
-        super(usuario, password, nombre, apellidos, fechaNacimiento, ciudad, estado, RFC, Curp, direccion, sucursales, Rol.Cliente);//Asigno de una vez el Rol Cliente
+    public Cliente(String nombre, String apellidos, LocalDate fechaNacimiento, String usuario, String password, String ciudad, String estado, String RFC, String Curp, String direccion, Sucursales sucursales, Rol rol) {
+        super(usuario, password, nombre, apellidos, fechaNacimiento, ciudad, estado, RFC, Curp, direccion, sucursales, Rol.Cliente);
         this.rol = rol;
         this.tarjetasCredito = new ArrayList<>();
         this.debito = new Debito(usuario, password, TiposCredito.debito);
@@ -54,7 +53,6 @@ Cliente extends Usuario {
             String RFC = datosCliente.get(7);
             String Curp = datosCliente.get(8);
             String direccion = datosCliente.get(9);
-            // Aquí deberías validar la contraseña
 
             Sucursales sucursal = usuario.getSucursales();
 
@@ -64,6 +62,7 @@ Cliente extends Usuario {
             }
             Banco.listaUsuarios.get(Rol.Cliente).add(cliente);
             System.out.println("Cliente registrado exitosamente.");
+            Banco.ListaClientes.add(cliente);
         }
     }
 

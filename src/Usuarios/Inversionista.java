@@ -5,14 +5,12 @@ import Usuarios.Utils.Rol;
 import Usuarios.Utils.Sucursales;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Scanner;
 import Banco.ValidacionesYRegistros;
 import Banco.Utils.DatosComun;
 
 public class Inversionista extends Usuario {
     ValidacionesYRegistros validacionesYRegistros = new ValidacionesYRegistros();
     double DineroInvertido;
-    private Banco banco = new Banco();
 
     public Inversionista(String usuario, String password, String nombre, String apellidos, LocalDate fechaNacimiento, String ciudad, String estado, String RFC, String Curp, String direccion, Sucursales sucursales, Rol rol, double DineroInvertido) {
         super(usuario, password, nombre, apellidos, fechaNacimiento, ciudad, estado, RFC, Curp, direccion, sucursales, rol);
@@ -20,7 +18,6 @@ public class Inversionista extends Usuario {
     }
 
     public void RegistrarInversionista() {
-        Banco banco = new Banco();
         ArrayList<String> datosComunes = DatosComun.RegistrarDatosComunes(Rol.Inversionista);
         String nombre = (String) datosComunes.get(0);
         String apellido = (String) datosComunes.get(1);
