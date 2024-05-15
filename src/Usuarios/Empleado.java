@@ -76,46 +76,6 @@ public class Empleado extends Usuario {
         System.out.println("Capturista registrado exitosamente.");
 
     }
-
-    public void revisarSolicitudes() {
-        boolean band = true;
-        System.out.println("Estas son las solicitudes hasta ahora: ");
-        for (int i = 0; i < cliente.Solicitudes.size(); i++) {
-            System.out.println((i + 1) + " " + cliente.Solicitudes.get(i));
-        }
-        while (band) {
-            try {
-
-
-                System.out.print("Ingresa el numero de la solicitud a revisar:");
-                int opcion = Herramientas.nextInt();
-                System.out.println("Esta fue la solicitud que escogiste:" + cliente.Solicitudes.get(opcion - 1));
-                System.out.println("Si la apruebas ingresa 1 si no 2");
-                opcion = Herramientas.nextInt();
-                if (opcion == 1) {
-                    String cadenaOriginal = cliente.Solicitudes.get(opcion - 1);
-                    String subcadenaExtraida = cadenaOriginal.substring(0, 10); //
-                    String cadenaModificada = cadenaOriginal.replace(subcadenaExtraida, "aprobada");
-                    cliente.Solicitudes.set(opcion - 1, cadenaModificada);
-                    if (cadenaModificada.equals("Simplicity")) {
-                        Credito credito = new Credito(getUsuario(), getPassword(), TiposCredito.simplicity);
-                        cliente.tarjetasCredito.add(credito);
-                    }
-
-                    band = false;
-                }
-                if (opcion == 2) {
-                    String cadenaOriginal = cliente.Solicitudes.get(opcion - 1);
-                    String subcadenaExtraida = cadenaOriginal.substring(0, 10); //
-                    String cadenaModificada = cadenaOriginal.replace(subcadenaExtraida, "no aprobada");
-                    cliente.Solicitudes.set(opcion - 1, cadenaModificada);
-                    band = false;
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Ingrese un numero");
-            }
-        }
-    }
     public static void MostrarEjecutivos(Sucursales sucursales) {
         synchronized (listaUsuarios) {
             boolean EjecutivosEncontrados = false;
