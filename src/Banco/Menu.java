@@ -12,13 +12,13 @@ import Usuarios.Utils.UsuarioActivo;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Menu {
     private Banco banco = new Banco();
     private Scanner sc = new Scanner(System.in);
     private Debito debito;
-    private Credito credito;
     private String contraseñaSeguridad = "B@nc0";
     private Usuario usuarioActual;
 
@@ -66,7 +66,9 @@ public class Menu {
         do {
             System.out.println("1.-Debito.");
             System.out.println("2.-Credito.");
-            System.out.println("3.-Cerrar sesión Actual.");
+            System.out.println("3.-Ver solicitudes de credito");
+            System.out.println("4.-hacer solicitud de credito");
+            System.out.println("5.-Cerrar sesión Actual.");
             System.out.println("Seleccione algo de la lista por favor: ");
 
             opcionCliente = Herramientas.nextInt();
@@ -107,43 +109,106 @@ public class Menu {
                     }while(opcionDeRetiro != 4);
                     break;
                 case 2:
-                    int opcionDeAgrego;
+                    int opcionDetarjeta=0;
+                    int opcion = 0;
+                    if (cliente.tarjetasCredito.isEmpty()){break;}
                     do {
-                        System.out.println("Usted ha seleccionado agregar dinero.");
-                        System.out.println("1.-Agregar de Debito.");
-                        if (cliente.tarjetasCredito != null) {
-                            System.out.println("2.-Agregar de Crédito.");
-                        }
-                        System.out.println("3.-Regresar al menú principal.");
+
+                        cliente.imprimirIndiceTarjetaCredito();
+                        System.out.println();
+                        System.out.println("4.-Si quiere salir al menu");
                         System.out.println("Elija una de las opciones: ");
+                        opcionDetarjeta = Herramientas.nextInt();
+                        do {
+                            System.out.println("Que deseas hacer con esta tarjeta de credito");
+                            System.out.println("1.-Pagar con esta tarjeta");
+                            System.out.println("2.-Abonar a la tarjeta");
+                            System.out.println("3.-Mostrar datos de la tarjeta");
+                            System.out.println("4.- salir del menu");
+                            opcion=Herramientas.nextInt();
+                            switch (opcion) {
+                                case 1:
+                                    int intentos=0;
+                                    boolean band2=true;
+                                    while(band2) {
 
-                        opcionDeAgrego = Herramientas.nextInt();
+                                        if (intentos==3){
+                                            System.out.println("Intentos superados");
+                                            System.out.println("Saliendo de retirar el dinero....");
+                                            band2=false;}
+                                        try {
+                                            System.out.println("Ingresa el dinero a retirar:");
+                                           double dineroRetirado = sc.nextDouble();
+                                            System.out.println("Ingresa el CVV:");
+                                            int cvvIngresado = sc.nextInt();
 
-                        switch (opcionDeAgrego) {
-                            case 1:
-                                cliente.debito.agregarDinero();
-                                break;
-                            case 2:
-                                credito.agregarDinero();
-                                break;
-                            case 3:
-                                System.out.println("Volviendo al menú principal...");
-                                break;
-                            default:
-                                System.out.println("Opción no válida.");
-                        }
-                    } while (opcionDeAgrego != 3);
+
+                                            if (cliente.tarjetasCredito.get(opcionDetarjeta).getCVV()==cvvIngresado) {
+                                                if (dineroRetirado <= cliente.tarjetasCredito.get(opcionDetarjeta).getSaldo()) {
+                                                    cliente.tarjetasCredito.get(opcionDetarjeta).setSaldo(cliente.tarjetasCredito.get(opcionDetarjeta).getSaldo()-dineroRetirado);
+                                                    break;
+                                                } else {
+                                                    System.out.println("No tienes el suficiente dinero");
+
+                                                }
+                                            }else{
+                                                System.out.println("CVV incorrecto");
+                                                intentos++;
+                                            }
+
+                                        } catch (InputMismatchException var3) {
+                                            System.out.println("Ingresa un numero de dinero o en seu caso el CVV correcto");
+                                            sc.nextLine();
+                                        }
+                                    }
+                                    break;
+                                case 2:
+                                    int intentos2=0;
+                                    boolean band3=true;
+                                    while(band3) {
+
+                                        if (intentos2==3){
+                                            System.out.println("Intentos superados");
+                                            System.out.println("Saliendo de retirar el dinero....");
+                                            band2=false;}
+                                        try {
+                                            System.out.println("Ingresa el dinero a pagar:");
+                                            double dineroRetirado = sc.nextDouble();
+                                            System.out.println("Ingresa el CVV:");
+                                            int cvvIngresado = sc.nextInt();
+
+
+                                            if (cliente.tarjetasCredito.get(opcionDetarjeta).getCVV()==cvvIngresado) {
+
+                                                cliente.tarjetasCredito.get(opcionDetarjeta).setSaldo(cliente.tarjetasCredito.get(opcionDetarjeta).getSaldo()+dineroRetirado);
+                                                break;
+
+
+
+                                            }else{
+                                                System.out.println("CVV incorrecto");
+                                                intentos2++;
+                                            }
+
+                                        } catch (InputMismatchException var3) {
+                                            System.out.println("Ingresa un numero de dinero o en seu caso el CVV correcto");
+                                            sc.nextLine();
+                                        }
+                                    }
+                                    break;
+                            }
+
+                        }while (opcion !=4);
+                    } while (opcionDetarjeta != 4);
+
                     break;
                 case 3:
-
+                        cliente.verSolicitudesTarjetaCreditoClientes(cliente);
                     break;
                 case 4:
-                    cliente.solicitarTarjetaCredito();
+                    cliente.solicitarTarjetaCredito(cliente);
                     break;
                 case 5:
-                    cliente.debito.mostrarSaldo();
-                    break;
-                case 6:
                     System.out.println("Sesión cerrada...");
                     UsuarioActivo.getInstance().cerrarSesionActiva();
                     ejecutarMenuBanco();
