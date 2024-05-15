@@ -31,8 +31,8 @@ public class Tarjeta {
         this.CVV = this.crearCVV();
         this.Clabe = this.crearClabe();
         this.fechaDeVencimiento = LocalDate.now().plusYears(5L);
-        this.fechaDeUltimoMovimiento = this.fechaDeUltimoMovimiento;
-        this.HoraDeUltimoMovimiento = this.HoraDeUltimoMovimiento;
+        this.fechaDeUltimoMovimiento = LocalDate.now();
+        this.HoraDeUltimoMovimiento = LocalDate.now();
     }
 
     public long crearNumeroDeTarjeta() {

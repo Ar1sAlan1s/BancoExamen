@@ -33,6 +33,13 @@ Cliente extends Usuario {
         this.debito = new Debito(usuario, password, TiposCredito.debito);
         this.id = generarId();
     }
+    public Cliente( String nombre, String apellidos, LocalDate fechaNacimiento,String usuario, String password, String ciudad, String estado, String RFC, String Curp, String direccion, Sucursales sucursales, Rol rol,Debito debito) {
+        super(usuario, password, nombre, apellidos, fechaNacimiento, ciudad, estado, RFC, Curp, direccion, sucursales, Rol.Cliente);//Asigno de una vez el Rol Cliente
+        this.rol = rol;
+        this.tarjetasCredito = new ArrayList<>();
+        this.debito = debito;
+        this.id = generarId();
+    }
 
     public static void registrarClienteEnSucursal(Usuario usuario) {
         if (usuario.getRol() == Rol.Gerente || (usuario.getRol() == Rol.Ejecutivos && usuario.getSucursales() == Sucursales.Acueducto) || (usuario.getRol() == Rol.Ejecutivos && usuario.getSucursales() == Sucursales.Madero)) {
@@ -198,5 +205,9 @@ Cliente extends Usuario {
         for (int i = 0; i < Solicitudes.size(); i++) {
             if (Solicitudes.get(i).contains(getUsuario())) System.out.println((i + 1) + " " + Solicitudes.get(i));
         }
+    }
+
+     public Debito getDebito() {
+        return debito;
     }
 }

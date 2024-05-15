@@ -1,5 +1,6 @@
 package Usuarios;
 
+import Tarjetas.Debito;
 import Usuarios.Utils.Rol;
 import Usuarios.Utils.Sucursales;
 import java.time.LocalDate;
@@ -84,4 +85,7 @@ public class Usuario {
     public String toString() {
         return String.format("Nombre:%s Apellidos:%s FechaDeNacimiento:%s Ciudad:%s Estado:%s, RFC:%s Curp:%s Direccion:%s ", this.nombre, this.apellidos, this.fechaNacimiento, this.ciudad, this.estado, this.RFC, this.Curp, this.direccion);
     }
+
+
+
 }

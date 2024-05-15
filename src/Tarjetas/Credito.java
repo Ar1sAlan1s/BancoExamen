@@ -48,6 +48,21 @@ public class Credito extends Tarjeta {
         }
 
     }
+//    public void mostrarTarjeta(){
+//        for (int i=0;cliente.getTarjetasCredito().size()>i; i++) {
+//            System.out.println("Tipo: " + cliente.getTarjetasCredito().get(i).tipo);
+//            System.out.println("Numero de tarjeta: " + cliente.getTarjetasCredito().get(i).getNumeroDeTarjeta());
+//            System.out.println("Fecha creacion: " + cliente.getTarjetasCredito().get(i).getFechaDeCreacion());
+//            System.out.println("Fecha vencimiento: " + cliente.getTarjetasCredito().get(i).getFechaDeVencimiento());
+//            System.out.println("Saldo: " + cliente.getTarjetasCredito().get(i).getSaldo());
+//            System.out.println("Clave interbancaria: " + cliente.getTarjetasCredito().get(i).getClabe());
+//            System.out.println("CVV: " + cliente.getTarjetasCredito().get(i).getCVV());
+//            System.out.println("Fecha ultimo movimiento: " + cliente.getTarjetasCredito().get(i).getFechaDeUltimoMovimiento());
+//            System.out.println("Hora ultimo movimiento: " + cliente.getTarjetasCredito().get(i).getHoraDeUltimoMovimiento());
+//            System.out.println();
+//        }
+//    }
+
 
     public void mostrarSaldo() {
         System.out.println("El saldo de su tarjeta de credito es: " + this.getSaldo());
