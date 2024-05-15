@@ -19,7 +19,7 @@ public class Inversionista extends Usuario {
         this.DineroInvertido = DineroInvertido;
     }
 
-    public void RegistrarInversionista(Usuario usuario) {
+    public static void RegistrarInversionista(Usuario usuario) {
 
             ArrayList<String> datosComunes = DatosComun.RegistrarDatosComunes(Rol.Inversionista);
 

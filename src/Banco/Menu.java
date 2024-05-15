@@ -1,10 +1,12 @@
 package Banco;
 
 import Banco.Utils.Herramientas;
+import Banco.Utils.HistorialTransaccion;
 import Tarjetas.Credito;
 import Tarjetas.Debito;
 import Usuarios.Cliente;
 import Usuarios.Empleado;
+import Usuarios.Inversionista;
 import Usuarios.Usuario;
 import Usuarios.Utils.UsuarioActivo;
 
@@ -195,7 +197,7 @@ public class Menu {
                                 String contraseñaGerente = sc.nextLine();
                                 if(contraseñaGerente.equals(contraseñaSeguridad)){
                                     System.out.println("Contraseña correcta.");
-
+                                    Inversionista.RegistrarInversionista(usuarioActual);
                                 }else{
                                     System.out.println("\nContraseña incorrecta. Intente de nuevo.");
                                 }
@@ -315,7 +317,7 @@ public class Menu {
                                 Empleado.MostrarEjecutivos(UsuarioActivo.getInstance().getUsuarioActual().getSucursales());
                                 break;
                             case 4:
-
+                                Inversionista.MostrarInversionistas(UsuarioActivo.getInstance().getUsuarioActual().getSucursales());
                                 break;
                             case 5:
                                 Empleado.MostrarTodosEmpleados(UsuarioActivo.getInstance().getUsuarioActual().getSucursales());
@@ -332,7 +334,7 @@ public class Menu {
 
                     break;
                 case 6:
-
+                    HistorialTransaccion.mostrarHistorialPorSucursal(usuarioActual.getSucursales(), usuarioActual);
                     break;
                 case 7:
                     System.out.println("\nCerrando la sesión actual. Redireccionando al inicio de sesión.");
@@ -429,7 +431,10 @@ public class Menu {
 
             switch (opcionInversionista){
                 case 1:
-
+                    System.out.println("Ingrese los fondos que desea proporcionar al banco: ");
+                    double fondosInversionista = Herramientas.nextDouble();
+                    LocalDate fecha = LocalDate.now();
+                    Banco.agregarFondos(fondosInversionista, usuarioActual, fecha);
                     break;
                 case 2:
                     System.out.println("\nCerrando la sesión actual. Redireccionando al inicio de sesión.");
