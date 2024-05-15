@@ -38,6 +38,7 @@ Cliente extends Usuario {
     public static void registrarClienteEnSucursal(Usuario usuario) {
         if (usuario.getRol() == Rol.Gerente || (usuario.getRol() == Rol.Ejecutivos && usuario.getSucursales() == Sucursales.Acueducto) || (usuario.getRol() == Rol.Ejecutivos && usuario.getSucursales() == Sucursales.Madero)) {
             ArrayList<String> datosCliente = DatosComun.RegistrarDatosComunes(Rol.Cliente);
+
             String nombre = datosCliente.get(0);
             String apellido = datosCliente.get(1);
             LocalDate fechaNacimiento = LocalDate.parse(datosCliente.get(2));
