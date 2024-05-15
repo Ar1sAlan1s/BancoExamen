@@ -1,10 +1,12 @@
 package Banco;
 
 import Banco.Utils.Herramientas;
+import Banco.Utils.HistorialTransaccion;
 import Tarjetas.Credito;
 import Tarjetas.Debito;
 import Usuarios.Cliente;
 import Usuarios.Empleado;
+import Usuarios.Inversionista;
 import Usuarios.Usuario;
 import Usuarios.Utils.UsuarioActivo;
 
@@ -39,6 +41,7 @@ public class Menu {
             if (usuarioActual != null) {
                 UsuarioActivo.getInstance().setUsuario(usuarioActual);
                 sonDatosCorrectos = true;
+                System.out.println("¡Bienvenido! " + usuarioActual.getRol());
                 asignarMenu();
             }else{
                 System.out.println("Usuario o contraseña incorrecta. Intenta de nuevo.");
@@ -195,7 +198,7 @@ public class Menu {
                                 String contraseñaGerente = sc.nextLine();
                                 if(contraseñaGerente.equals(contraseñaSeguridad)){
                                     System.out.println("Contraseña correcta.");
-
+                                    Inversionista.RegistrarInversionista(usuarioActual);
                                 }else{
                                     System.out.println("\nContraseña incorrecta. Intente de nuevo.");
                                 }
@@ -229,17 +232,25 @@ public class Menu {
                                 Cliente.eliminarCliente(eliminarCliente);
                                 break;
                             case 2:
-
+                                System.out.println("Ingrese el nombre de usuario del capturista: ");
+                                String eliminarCapturista = sc.nextLine();
+                                Empleado.eliminarCapturista(eliminarCapturista, usuarioActual);
                                 break;
                             case 3:
-
+                                System.out.println("Ingresa el nombre de usuario del ejecutivo: ");
+                                String eliminarEjecutivo = sc.nextLine();
+                                Empleado.eliminarEjecutivo(eliminarEjecutivo, usuarioActual);
                                 break;
                             case 4:
                                 System.out.println("Ingrese la contraseña de seguridad antes de continuar: ");
                                 String contraseñaGerente = sc.nextLine();
                                 if(contraseñaGerente.equals(contraseñaSeguridad)){
                                     System.out.println("Contraseña correcta.");
-                                    // Su lógica para eliminar un inversionista aquí.
+
+                                    System.out.println("\nProporcione el nombre de usuario del inversionista a eliminar: ");
+                                    String eliminarInversionista = sc.nextLine();
+                                    Inversionista.eliminarInversionista(eliminarInversionista, usuarioActual);
+
                                 }else{
                                     System.out.println("\nContraseña incorrecta. Intente de nuevo.");
                                 }
@@ -306,7 +317,8 @@ public class Menu {
 
                         switch (opcionMostrar){
                             case 1:
-                                Cliente.MostrarClientes(UsuarioActivo.getInstance().getUsuarioActual().getSucursales());
+                                UsuarioActivo.getInstance();
+                                Cliente.MostrarClientes(UsuarioActivo.getUsuarioActual().getSucursales());
                                 break;
                             case 2:
                                 Empleado.MostrarCapturistas(UsuarioActivo.getInstance().getUsuarioActual().getSucursales());
@@ -315,7 +327,7 @@ public class Menu {
                                 Empleado.MostrarEjecutivos(UsuarioActivo.getInstance().getUsuarioActual().getSucursales());
                                 break;
                             case 4:
-
+                                Inversionista.MostrarInversionistas(UsuarioActivo.getInstance().getUsuarioActual().getSucursales());
                                 break;
                             case 5:
                                 Empleado.MostrarTodosEmpleados(UsuarioActivo.getInstance().getUsuarioActual().getSucursales());
@@ -332,7 +344,7 @@ public class Menu {
 
                     break;
                 case 6:
-
+                    HistorialTransaccion.mostrarHistorialPorSucursal(usuarioActual.getSucursales(), usuarioActual);
                     break;
                 case 7:
                     System.out.println("\nCerrando la sesión actual. Redireccionando al inicio de sesión.");
@@ -429,7 +441,10 @@ public class Menu {
 
             switch (opcionInversionista){
                 case 1:
-
+                    System.out.println("Ingrese los fondos que desea proporcionar al banco: ");
+                    double fondosInversionista = Herramientas.nextDouble();
+                    LocalDate fecha = LocalDate.now();
+                    Banco.agregarFondos(fondosInversionista, usuarioActual, fecha);
                     break;
                 case 2:
                     System.out.println("\nCerrando la sesión actual. Redireccionando al inicio de sesión.");

@@ -17,9 +17,9 @@ public class Banco {
         put(Rol.Gerente, new ArrayList<>());}};
     public static double FondoDedinero = 0;
     public Banco() {
-        Empleado Gerente1 = new Empleado("Gerente1","23","Juan","Perez", LocalDate.now(),"Morelia","Mich","12222","12222","Av Tec de morelia", Sucursales.Acueducto, Rol.Gerente,300000, LocalDate.now());
+        Empleado Gerente1 = new Empleado("Juan","Perez",LocalDate.now(),"Gerente1", "23","Morelia","Mich","12222","12222","Av Tec de morelia", Sucursales.Acueducto, Rol.Gerente,300000, LocalDate.now());
         listaUsuarios.get(Rol.Gerente).add(Gerente1);
-        Empleado Gerente2 = new Empleado("Gerente2","33","Martin","Medina", LocalDate.now(),"Morelia","Mich","172313","41241","Av Rosedal", Sucursales.Madero, Rol.Gerente,300000, LocalDate.now());
+        Empleado Gerente2 = new Empleado("MArtin","Medina", LocalDate.now(),"Gerente2", "33","Morelia","Mich","172313","41241","Av Rosedal", Sucursales.Madero, Rol.Gerente,300000, LocalDate.now());
         listaUsuarios.get(Rol.Gerente).add(Gerente2);
     }
     public Usuario comprobarInicioSesion(String usuario, String contraseña) {
