@@ -4,6 +4,7 @@ import Tarjetas.Utils.TiposCredito;
 import java.util.InputMismatchException;
 
 public class Credito extends Tarjeta {
+    TiposCredito tipoCredito;
     public Credito(String usuario, String password, TiposCredito tipo) {
         super(usuario, password, tipo);
         if (tipo == TiposCredito.simplicity) {
@@ -13,6 +14,7 @@ public class Credito extends Tarjeta {
         } else if (tipo == TiposCredito.oro) {
             this.setSaldo(40000.0);
         }
+        this.tipoCredito = tipo;
 
     }
     public void agregarDinero() {
@@ -48,21 +50,23 @@ public class Credito extends Tarjeta {
         }
 
     }
-//    public void mostrarTarjeta(){
-//        for (int i=0;cliente.getTarjetasCredito().size()>i; i++) {
-//            System.out.println("Tipo: " + cliente.getTarjetasCredito().get(i).tipo);
-//            System.out.println("Numero de tarjeta: " + cliente.getTarjetasCredito().get(i).getNumeroDeTarjeta());
-//            System.out.println("Fecha creacion: " + cliente.getTarjetasCredito().get(i).getFechaDeCreacion());
-//            System.out.println("Fecha vencimiento: " + cliente.getTarjetasCredito().get(i).getFechaDeVencimiento());
-//            System.out.println("Saldo: " + cliente.getTarjetasCredito().get(i).getSaldo());
-//            System.out.println("Clave interbancaria: " + cliente.getTarjetasCredito().get(i).getClabe());
-//            System.out.println("CVV: " + cliente.getTarjetasCredito().get(i).getCVV());
-//            System.out.println("Fecha ultimo movimiento: " + cliente.getTarjetasCredito().get(i).getFechaDeUltimoMovimiento());
-//            System.out.println("Hora ultimo movimiento: " + cliente.getTarjetasCredito().get(i).getHoraDeUltimoMovimiento());
-//            System.out.println();
-//        }
-//    }
 
+    public void mostrarTarjeta(){
+        System.out.println("Tipo: "+ getTipoCredito());
+        System.out.println("Numero de tarjeta: "+ super.numeroDeTarjeta);
+        System.out.println("Fecha creacion: "+ super.fechaDeCreacion);
+        System.out.println("Fecha vencimiento: "+ super.fechaDeCreacion.toString());
+        System.out.println("Saldo: "+super.saldo );
+        System.out.println("Clave interbancaria: "+ super.getClabe());
+        System.out.println("CVV: "+ super.CVV);
+        System.out.println("Fecha ultimo movimiento: "+ super.fechaDeUltimoMovimiento.toString());
+        System.out.println("Fecha ultimo movimiento: "+ super.getHoraDeUltimoMovimiento().toString());
+        System.out.println();
+    }
+
+    public TiposCredito getTipoCredito() {
+        return tipoCredito;
+    }
 
     public void mostrarSaldo() {
         System.out.println("El saldo de su tarjeta de credito es: " + this.getSaldo());

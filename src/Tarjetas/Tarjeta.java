@@ -19,6 +19,7 @@ public class Tarjeta {
     protected LocalDate fechaDeVencimiento;
     protected LocalDate fechaDeUltimoMovimiento;
     protected LocalTime HoraDeUltimoMovimiento;
+    protected TiposCredito tipo;
     Random rand;
 
     public Tarjeta(String usurio, String password, TiposCredito tipo) {
@@ -34,6 +35,7 @@ public class Tarjeta {
         this.fechaDeVencimiento = LocalDate.now().plusYears(5L);
         this.fechaDeUltimoMovimiento = LocalDate.now();
         this.HoraDeUltimoMovimiento = LocalTime.now();
+        this.tipo = tipo;
     }
 
     public long crearNumeroDeTarjeta() {

@@ -1,7 +1,9 @@
 package Usuarios;
 import Banco.Banco;
 import Banco.Utils.DatosComun;
+import Tarjetas.Credito;
 import Tarjetas.Debito;
+import Tarjetas.Utils.Solicitud;
 import Tarjetas.Utils.TiposCredito;
 import Usuarios.Utils.Rol;
 import Usuarios.Utils.Sucursales;
@@ -21,8 +23,8 @@ Cliente extends Usuario {
     private static Scanner scan = new Scanner(System.in);
     private static Random ran = new Random();
     private String status = "En proceso";
-    public ArrayList<String> Solicitudes = new ArrayList<>();
-    public ArrayList<Tarjeta> tarjetasCredito;
+    public ArrayList<Solicitud> Solicitudes = new ArrayList<>();
+    public ArrayList<Credito> tarjetasCredito;
     private ArrayList<Integer> idsGenerados = new ArrayList<>();
 
     public Cliente(String nombre, String apellidos, LocalDate fechaNacimiento, String usuario, String password, String ciudad, String estado, String RFC, String Curp, String direccion, Sucursales sucursales, Rol rol) {
@@ -30,13 +32,6 @@ Cliente extends Usuario {
         this.rol = rol;
         this.tarjetasCredito = new ArrayList<>();
         this.debito = new Debito(usuario, password, TiposCredito.debito);
-        this.id = generarId();
-    }
-    public Cliente( String nombre, String apellidos, LocalDate fechaNacimiento,String usuario, String password, String ciudad, String estado, String RFC, String Curp, String direccion, Sucursales sucursales, Rol rol,Debito debito) {
-        super(usuario, password, nombre, apellidos, fechaNacimiento, ciudad, estado, RFC, Curp, direccion, sucursales, Rol.Cliente);//Asigno de una vez el Rol Cliente
-        this.rol = rol;
-        this.tarjetasCredito = new ArrayList<>();
-        this.debito = debito;
         this.id = generarId();
     }
 
@@ -122,65 +117,6 @@ Cliente extends Usuario {
         this.status = status;
     }
 
-    public void solicitarTarjetaCredito() {
-        boolean band = true;
-        String solicitud;
-        System.out.println("Bienvenido al proceso de Solicitud de credito");
-        System.out.println("Las siguientes opciones son a las que eres apto para solicitar");
-        while (band) {
-            if (debito.getSaldo() >= 200000) {
-                System.out.println("1.-Simplicity");
-                System.out.println("2.-Platino");
-                System.out.println("3.-Oro");
-                System.out.println("Ingrese la tarjeta a solicitar:");
-                String tarjeta = scan.nextLine();
-                if (tarjeta.equals("1") || tarjeta.equals("2") || tarjeta.equals("3")) {
-                    if (tarjeta.equals("1")) {
-                        solicitud = getStatus() + creadorSolicitudesString() + "Simplicity";
-                    } else if (tarjeta.equals("2")) {
-                        solicitud = getStatus() + creadorSolicitudesString() + "Platino";
-                    } else {
-                        solicitud = getStatus() + creadorSolicitudesString() + "Oro";
-                    }
-                    Solicitudes.add(solicitud);
-                    band = false;
-                } else {
-                    System.out.println("Ingrese una opcion disponible");
-                }
-            } else if (debito.getSaldo() >= 100000) {
-                System.out.println("1.-Simplicity");
-                System.out.println("2.-Platino");
-                System.out.println("Ingrese la tarjeta a solicitar:");
-                String tarjeta = scan.nextLine();
-                if (tarjeta.equals("1") || tarjeta.equals("2")) {
-                    if (tarjeta.equals("1")) {
-                        solicitud = getStatus() + creadorSolicitudesString() + "Simplicity";
-                    } else {
-                        solicitud = getStatus() + creadorSolicitudesString() + "Platino";
-                    }
-                    Solicitudes.add(solicitud);
-                    band = false;
-                } else {
-                    System.out.println("Ingrese una opcion disponible");
-                }
-            } else if (debito.getSaldo() >= 50000) {
-                System.out.println("1.-Simplicity");
-                System.out.println("Ingrese la tarjeta a solicitar:");
-                String tarjeta = scan.nextLine();
-                if (tarjeta.equals("1")) {
-                    solicitud = getStatus() + creadorSolicitudesString() + "Simplicity";
-                    Solicitudes.add(solicitud);
-                    band = false;
-                } else {
-                    System.out.println("Ingrese una opcion disponible");
-                }
-            }
-
-
-        }
-
-
-    }
 
     public int generarId() {
         int id;
@@ -199,14 +135,94 @@ Cliente extends Usuario {
         return getUsuario() + LocalDate.now() + String.valueOf(debito.getSaldo()) + String.valueOf(getId());
     }
 
-    public void versolicitudespropias() {
-        System.out.println("Las solicitudes hechas son:");
-        for (int i = 0; i < Solicitudes.size(); i++) {
-            if (Solicitudes.get(i).contains(getUsuario())) System.out.println((i + 1) + " " + Solicitudes.get(i));
-        }
-    }
 
      public Debito getDebito() {
         return debito;
+    }
+    public void mostrarTarjetas(){
+        System.out.println();
+        this.debito.mostrarTarjeta();
+        for (Credito credito : tarjetasCredito) {
+            System.out.println();
+            credito.mostrarTarjeta();
+        }
+    }
+    public void solicitarTarjetaCredito() {
+        if(!revisarSolicitud()){
+            System.out.println("Tienes una solicitud pendiente.");
+            return;
+        }
+        boolean bandS = true;
+        boolean bandP = true;
+        boolean bandO = true;
+        Scanner leer = new Scanner(System.in);
+        for (Credito credito : tarjetasCredito) {
+            if (credito.getTipoCredito()==TiposCredito.simplicity) {
+                bandS = false;
+            }
+            if (credito.getTipoCredito()==TiposCredito.platino) {
+                bandP = false;
+            }
+            if (credito.getTipoCredito()==TiposCredito.oro){
+                bandO = false;
+            }
+        }
+        if (!bandS && !bandP && !bandO) {
+            System.out.println("Tienes todas las tarjetas, ya no puedes solicitar mas.");
+            return;
+        }
+        if(debito.getSaldo() >= 200000 && bandO){
+            System.out.printf("Tu saldo es de $%.2f, puedes solicitar la tarjeta oro.\n", debito.getSaldo());
+            System.out.println("Deseas solicitarla Y/N: ");
+            String opcion = leer.nextLine();
+            if(opcion.equalsIgnoreCase("Y")){
+                new Solicitud(TiposCredito.oro,(Cliente)UsuarioActivo.getUsuarioActual());
+                System.out.println("Tarjeta solicitada satisfactoriamente.");
+            } else{
+                System.out.println("Tarjeta no solicitada. ");
+            }
+        }
+        else if(debito.getSaldo() >= 100000 && bandP){
+            System.out.printf("Tu saldo es de $%.2f, puedes solicitar la tarjeta platino.\n", debito.getSaldo());
+            System.out.println("Deseas solicitarla Y/N: ");
+            String opcion = leer.nextLine();
+            if(opcion.equalsIgnoreCase("Y")){
+                new Solicitud(TiposCredito.platino,(Cliente)UsuarioActivo.getUsuarioActual());
+                System.out.println("Tarjeta solicitada satisfactoriamente.");
+            } else {
+                System.out.println("Tarjeta no solicitada. ");
+            }
+        }
+        else if (debito.getSaldo() >= 50000 && bandS){
+            System.out.printf("Tu saldo es de $%.2f, puedes solicitar la tarjeta simplicity.\n", debito.getSaldo());
+            System.out.println("Deseas solicitarla Y/N: ");
+            String opcion = leer.nextLine();
+            if(opcion.equalsIgnoreCase("Y")){
+                new Solicitud(TiposCredito.simplicity,(Cliente)UsuarioActivo.getUsuarioActual());
+                System.out.println("Tarjeta solicitada satisfactoriamente.");
+            } else {
+                System.out.println("Tarjeta no solicitada. ");
+            }
+        }
+        else {
+            System.out.println("Actualmente no puedes solicitar ninguna tarjeta de credito.");
+        }
+    }
+    public boolean revisarSolicitud(){
+        boolean bandS = true;
+        boolean bandP = true;
+        boolean bandO = true;
+        for (Solicitud solicitud: Solicitudes) {
+            if (solicitud.getStatus().equals("En proceso")) {
+                return false;
+            }
+        }
+        return true;
+    }
+    public void imprimirIndiceTarjetaCredito(){
+        for (Credito tarjeta : tarjetasCredito){
+            System.out.println("[" + tarjetasCredito.indexOf(tarjeta) + "]");
+            tarjeta.mostrarTarjeta();
+        }
     }
 }

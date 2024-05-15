@@ -141,7 +141,7 @@ public class Menu {
                     } while (opcionDeAgrego != 3);
                     break;
                 case 3:
-                    cliente.versolicitudespropias();
+
                     break;
                 case 4:
                     cliente.solicitarTarjetaCredito();
