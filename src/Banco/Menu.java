@@ -24,7 +24,9 @@ public class Menu {
     private Empleado empleado = new Empleado("", "", "", "", LocalDate.of(2004,8,30), "", "", "", "", "", Sucursales.Madero, Rol.Capturista, 30000, LocalDate.now());
     private Inversionista inversionista = new Inversionista("", "", "", "", LocalDate.of(2004,8,30), "", "", "", "", "", Sucursales.Madero, Rol.Inversionista, 30000);
     private Usuario usuarioActual;
-    private Empleado gerente;
+    private Empleado Gerente;
+    private Empleado Ejecutivo;
+    private Empleado Capturista;
 
 
     //Verificar el inicio de sesión
@@ -179,36 +181,20 @@ public class Menu {
 
                         switch (opcionRegistrar){
                             case 1:
-                                gerente = banco.obtenerGerente();
-                                if (gerente != null ){
-                                    cliente.RegistrarCliente(gerente);
-                                }else{
-                                    System.out.println("No");
-                                }
+                                Cliente.registrarClienteEnSucursal(usuarioActual);
                                 break;
                             case 2:
-                                gerente = banco.obtenerGerente();
-                                if (gerente != null ){
-                                    empleado.RegistrarCapturista(gerente);
-                                }else{
-                                    System.out.println("No");
-                                }
+
                                 break;
                             case 3:
-                                gerente = banco.obtenerGerente();
-                                inversionista.RegistrarInversionista(gerente);
+
                                 break;
                             case 4:
                                 System.out.println("Ingrese la contraseña de seguridad antes de continuar: ");
                                 String contraseñaGerente = sc.nextLine();
                                 if(contraseñaGerente.equals(contraseñaSeguridad)){
                                     System.out.println("Contraseña correcta.");
-                                    gerente = banco.obtenerGerente();
-                                    if (gerente != null ){
-                                        empleado.RegistrarEjecutivo(gerente);
-                                    }else{
-                                        System.out.println("No");
-                                    }
+
                                 }else{
                                     System.out.println("\nContraseña incorrecta. Intente de nuevo.");
                                 }
@@ -230,14 +216,16 @@ public class Menu {
                         System.out.println("2.-Capturista.");
                         System.out.println("3.-Ejecutivo.");
                         System.out.println("4.-Inversionista.");
-                        System.out.println("5.-Salir de la eliminación.");
+                        System.out.println("5.-Salir");
                         System.out.println("Seleccione una opcion: ");
 
                         opcionEliminar = Herramientas.nextInt();
 
                         switch (opcionEliminar){
                             case 1:
-
+                                System.out.println("Ingrese el nombre de usuario del cliente: ");
+                                String eliminarCliente = sc.nextLine();
+                                Cliente.eliminarCliente(eliminarCliente);
                                 break;
                             case 2:
 
@@ -273,7 +261,7 @@ public class Menu {
                         System.out.println("2.-Capturista.");
                         System.out.println("3.-Ejecutivo.");
                         System.out.println("4.-Inversionista.");
-                        System.out.println("5.-Salir de la modificación.");
+                        System.out.println("5.-Salir.");
                         System.out.println("Seleccione una opción: ");
 
                         opcionModificar = Herramientas.nextInt();
@@ -317,7 +305,7 @@ public class Menu {
 
                         switch (opcionMostrar){
                             case 1:
-
+                                Cliente.MostrarClientes(UsuarioActivo.getInstance().getUsuarioActual().getSucursales());
                                 break;
                             case 2:
 
@@ -368,16 +356,18 @@ public class Menu {
 
             switch (opcionEjecutivo){
                 case 1:
-
+                    Cliente.registrarClienteEnSucursal(usuarioActual);
                     break;
                 case 2:
-
+                    System.out.println("Ingrese el nombre de usuario del cliente: ");
+                    String eliminarCliente = sc.nextLine();
+                    Cliente.eliminarCliente(eliminarCliente);
                     break;
                 case 3:
 
                     break;
                 case 4:
-
+                    Cliente.MostrarClientes(UsuarioActivo.getInstance().getUsuarioActual().getSucursales());
                     break;
                 case 5:
                     System.out.println("\nCerrando la sesión actual. Redireccionando al inicio de sesión.");

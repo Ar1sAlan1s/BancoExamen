@@ -1,9 +1,12 @@
 package Banco.Utils;
 
+import Usuarios.Usuario;
+
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Herramientas {
-    private static Scanner sc;
+    private static Scanner sc = new Scanner(System.in);
 
     public Herramientas() {
     }
@@ -32,9 +35,5 @@ public class Herramientas {
                 System.out.println("Por favor ingrese un número.");
             }
         }
-    }
-
-    static {
-        sc = new Scanner(System.in);
     }
 }
