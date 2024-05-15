@@ -33,7 +33,7 @@ public class Cliente extends Usuario {
     }
 
     public static void registrarClienteEnSucursal(Usuario usuario) {
-        if (usuario.getRol() == Rol.Gerente || (usuario.getRol() == Rol.Capturista && usuario.getSucursales() == Sucursales.Acueducto) || (usuario.getRol() == Rol.Capturista && usuario.getSucursales() == Sucursales.Madero)) {
+        if (usuario.getRol() == Rol.Gerente || (usuario.getRol() == Rol.Ejecutivos && usuario.getSucursales() == Sucursales.Acueducto) || (usuario.getRol() == Rol.Ejecutivos && usuario.getSucursales() == Sucursales.Madero)) {
             ArrayList<String> datosCliente = DatosComun.RegistrarDatosComunes(Rol.Cliente);
             String nombre = datosCliente.get(0);
             String apellido = datosCliente.get(1);
@@ -81,7 +81,7 @@ public class Cliente extends Usuario {
     public static void eliminarCliente(String nombreUsuario) {
         Usuario usuarioActual = UsuarioActivo.getInstance().getUsuarioActual();
 
-        if (usuarioActual.getRol() != Rol.Gerente && usuarioActual.getRol() != Rol.Capturista) {
+        if (usuarioActual.getRol() != Rol.Gerente && usuarioActual.getRol() != Rol.Ejecutivos) {
             System.out.println("No tienes permiso para eliminar clientes.");
             return;
         }
@@ -91,7 +91,7 @@ public class Cliente extends Usuario {
         for (Usuario usuario : listaUsuarios.get(Rol.Cliente)) {
             Cliente cliente = (Cliente) usuario;
             if (cliente.getUsuario().equals(nombreUsuario)) {
-                if (usuarioActual.getRol() == Rol.Capturista && cliente.getSucursales() != sucursalActual) {
+                if ((usuarioActual.getRol() == Rol.Ejecutivos || usuarioActual.getRol() == Rol.Gerente) && cliente.getSucursales() != sucursalActual) {
                     System.out.println("No tienes permiso para eliminar clientes de otra sucursal.");
                     return;
                 }
