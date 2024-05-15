@@ -13,7 +13,9 @@ import java.util.*;
 import static Banco.Banco.listaUsuarios;
 
 
-public class Cliente extends Usuario {
+public class
+
+Cliente extends Usuario {
     public Debito debito;
     private Rol rol;
     private int id;
@@ -24,7 +26,7 @@ public class Cliente extends Usuario {
     public ArrayList<Tarjeta> tarjetasCredito;
     private ArrayList<Integer> idsGenerados = new ArrayList<>();
 
-    public Cliente(String usuario, String password, String nombre, String apellidos, LocalDate fechaNacimiento, String ciudad, String estado, String RFC, String Curp, String direccion, Sucursales sucursales, Rol rol) {
+    public Cliente( String nombre, String apellidos, LocalDate fechaNacimiento,String usuario, String password, String ciudad, String estado, String RFC, String Curp, String direccion, Sucursales sucursales, Rol rol) {
         super(usuario, password, nombre, apellidos, fechaNacimiento, ciudad, estado, RFC, Curp, direccion, sucursales, Rol.Cliente);//Asigno de una vez el Rol Cliente
         this.rol = rol;
         this.tarjetasCredito = new ArrayList<>();
@@ -38,17 +40,18 @@ public class Cliente extends Usuario {
             String nombre = datosCliente.get(0);
             String apellido = datosCliente.get(1);
             LocalDate fechaNacimiento = LocalDate.parse(datosCliente.get(2));
-            String ciudad = datosCliente.get(3);
-            String estado = datosCliente.get(4);
-            String RFC = datosCliente.get(5);
-            String Curp = datosCliente.get(6);
-            String direccion = datosCliente.get(7);
-            String nombreUsuario = datosCliente.get(8);
-            String contraseña = datosCliente.get(9); // Aquí deberías validar la contraseña
+            String nombreUsuario = datosCliente.get(3);
+            String contraseña = datosCliente.get(4);
+            String ciudad = datosCliente.get(5);
+            String estado = datosCliente.get(6);
+            String RFC = datosCliente.get(7);
+            String Curp = datosCliente.get(8);
+            String direccion = datosCliente.get(9);
+            // Aquí deberías validar la contraseña
 
             Sucursales sucursal = usuario.getSucursales();
 
-            Cliente cliente = new Cliente(nombreUsuario, contraseña, nombre, apellido, fechaNacimiento, ciudad, estado, RFC, Curp, direccion, sucursal, Rol.Cliente);
+            Cliente cliente = new Cliente(nombre,apellido,fechaNacimiento,nombreUsuario,contraseña,ciudad,estado,RFC,Curp,direccion,sucursal,Rol.Cliente);
             if (!Banco.listaUsuarios.containsKey(Rol.Cliente)) {
                 Banco.listaUsuarios.put(Rol.Cliente, new ArrayList<>());
             }

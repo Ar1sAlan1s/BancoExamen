@@ -17,7 +17,7 @@ import java.util.Scanner;
 public class Menu {
     private Banco banco = new Banco();
     private Scanner sc = new Scanner(System.in);
-    private Cliente cliente = new Cliente("","","","", LocalDate.now(),"","","", "","", Sucursales.Madero, Rol.Cliente);
+    private Cliente cliente = new Cliente("","",LocalDate.now(),"", "","","","", "","", Sucursales.Madero, Rol.Cliente);
     private Debito debito;
     private Credito credito;
     private String contraseñaSeguridad = "B@nc0";
@@ -97,7 +97,7 @@ public class Menu {
                                 debito.retirarDinero();
                                 break;
                             case 2:
-                                credito.retirarDinero();
+                                credito.agregarDinero();
                                 break;
                             case 3:
                                 System.out.println("Volviendo al menú principal. . .");
@@ -110,9 +110,9 @@ public class Menu {
                 case 2:
                     int opcionDeAgrego = 0;
                     do{
-                        System.out.println("Usted a seleccionado retirar dinero.");
-                        System.out.println("1.-Retirar de Debito.");
-                        System.out.println("2.-Retirar de Crédito.");
+                        System.out.println("Usted a seleccionado agregar dinero.");
+                        System.out.println("1.-Agregar de Debito.");
+                        System.out.println("2.-Agregar de Crédito.");
                         System.out.println("3.-Regresar al menú principal.");
                         System.out.println("Elija una de las opciones: ");
 
