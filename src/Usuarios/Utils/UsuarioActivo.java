@@ -4,10 +4,9 @@ import Usuarios.Usuario;
 
 public class UsuarioActivo {
     private static UsuarioActivo instance;
-    private Usuario usuarioActual;
+    private static Usuario usuario;
 
-    public UsuarioActivo() {
-    }
+    public UsuarioActivo() {}
 
     public static UsuarioActivo getInstance() {
         if (instance == null) {
@@ -17,24 +16,21 @@ public class UsuarioActivo {
         return instance;
     }
 
-    public Usuario getUsuarioActual() {
-        return this.usuarioActual;
+    public static Usuario getUsuarioActual() {
+        return usuario;
     }
 
-    public void setUsuarioActual(Usuario usuarioActual) {
-        this.usuarioActual = usuarioActual;
+
+    public void setUsuario(Usuario usuario){
+        UsuarioActivo.usuario = usuario;
     }
 
-    public void setUsuario(Usuario usuarioActual) {
-        this.usuarioActual = usuarioActual;
-    }
-
-    public boolean existeUsuarioEnSesion() {
-        return this.usuarioActual != null;
+    public boolean existeUsuarioEnSesion(Usuario usuario) {
+        return UsuarioActivo.usuario != null;
     }
 
     public void cerrarSesionActiva() {
         instance = null;
-        this.usuarioActual = null;
+        usuario = null;
     }
 }

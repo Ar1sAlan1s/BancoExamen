@@ -17,7 +17,6 @@ import java.util.Scanner;
 public class Menu {
     private Banco banco = new Banco();
     private Scanner sc = new Scanner(System.in);
-    private final Cliente cliente = new Cliente("dorian","Ferreira Calderon",LocalDate.now(),"222", "111","","","", "","", Sucursales.Madero, Rol.Cliente);
     private Debito debito;
     private Credito credito;
     private String contraseñaSeguridad = "B@nc0";
@@ -67,12 +66,7 @@ public class Menu {
 
     private void seleccionarMenuCliente() {
         int opcionCliente = 0;
-        for (int i = 0; i< Banco.ListaClientes.size(); i++) {
-            if (usuarioActual.getRFC().equals(Banco.ListaClientes.get(i).getRFC())) {
-                Cliente cliente = Banco.ListaClientes.get(i);
-            }
-        }
-
+        Cliente cliente = (Cliente) UsuarioActivo.getUsuarioActual();
 
         do {
             System.out.println("MENU CLIENTE");
@@ -105,7 +99,7 @@ public class Menu {
                                 cliente.debito.retirarDinero();
                                 break;
                             case 2:
-                                credito.agregarDinero();
+//                                cliente1.tarjetasCredito.get(1).;
                                 break;
                             case 3:
                                 System.out.println("Volviendo al menú principal. . .");
