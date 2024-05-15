@@ -17,6 +17,8 @@ import java.util.Scanner;
 public class Menu {
     private Banco banco = new Banco();
     private Scanner sc = new Scanner(System.in);
+    private final Cliente cliente = new Cliente("dorian","Ferreira Calderon",LocalDate.now(),"222", "111","","","", "","", Sucursales.Madero, Rol.Cliente);
+    private Debito debito;
     private Credito credito;
     private String contraseñaSeguridad = "B@nc0";
     private Empleado empleado = new Empleado("", "", "", "", LocalDate.of(2004,8,30), "", "", "", "", "", Sucursales.Madero, Rol.Capturista, 30000, LocalDate.now());
@@ -25,9 +27,12 @@ public class Menu {
     private Empleado Gerente;
     private Empleado Ejecutivo;
     private Empleado Capturista;
+
+
     //Verificar el inicio de sesión
     public void iniciarSesion() {
         boolean sonDatosCorrectos = false;
+
         do {
             System.out.println("*Bienvenido al inicio de sesión del banco*");
             System.out.println("Inicie sesión para continuar.");
@@ -62,11 +67,23 @@ public class Menu {
 
     private void seleccionarMenuCliente() {
         int opcionCliente = 0;
+        for (int i = 0; i< Banco.ListaClientes.size(); i++) {
+            if (usuarioActual.getRFC().equals(Banco.ListaClientes.get(i).getRFC())) {
+                Cliente cliente = Banco.ListaClientes.get(i);
+            }
+        }
+
+
         do {
             System.out.println("MENU CLIENTE");
-            System.out.println("1.-Debito.");
-            System.out.println("2.-Credito.");
-            System.out.println("3.-Cerrar sesión Actual.");
+            System.out.println("1.-Retirar dinero.");
+            System.out.println("2.-Agregar dinero.");
+            System.out.println("3.-Verificar estados de solicitudes.");
+            if(cliente.debito.getSaldo()>=50000) {
+                System.out.println("4.-Solicitar Tarjeta de crédito.");
+            }
+            System.out.println("5.- Ver saldo actual de la Tarjeta de debito");
+            System.out.println("6.-Cerrar sesión Actual.");
             System.out.println("Seleccione algo de la lista por favor: ");
 
             opcionCliente = Herramientas.nextInt();
@@ -75,10 +92,9 @@ public class Menu {
                 case 1:
                     int opcionDeRetiro = 0;
                     do{
-                        System.out.println("Que desea hacer con debito");
-                        System.out.println("1.-Agregar a Debito");
-                        System.out.println("2.-Retirar de Debito.");
-                        System.out.println("3.-Mostrar datos.");
+                        System.out.println("Usted a seleccionado retirar dinero.");
+                        System.out.println("1.-Retirar de Debito.");
+                        System.out.println("2.-Retirar de Crédito.");
                         System.out.println("4.-Regresar al menú principal.");
                         System.out.println("Elija una de las opciones: ");
 
@@ -86,69 +102,65 @@ public class Menu {
 
                         switch (opcionDeRetiro){
                             case 1:
-                                cliente.getDebito().agregarDinero();
+                                cliente.debito.retirarDinero();
                                 break;
                             case 2:
-                                cliente.getDebito().retirarDinero();
-                                break;
-                            case 3:
-                                cliente.debito.mostrarTarjeta();
-                                break;
-                            case 4:
-                                System.out.println("Volviendo al menú principal. . .");
-                                break;
-                            default:
-                                System.out.println("Opción no valida.");
-                        }
-                    }while(opcionDeRetiro != 4);
-                    break;
-                case 2:
-                    int opcionDeAgrego = 0;
-                    do{
-                        System.out.println("Que desea hacer con debito");
-                        System.out.println("1.-Agregar a Credito");
-                        System.out.println("2.-Retirar de Credito.");
-                        System.out.println("3.-Mostrar datos.");
-                        System.out.println("4.-Ver solicitudes");
-                        if(cliente.getDebito().getSaldo()>=50000){System.out.println("5.-Solicitar tarjeta");}
-                        System.out.println("6.-Regresar al menú principal.");
-                        System.out.println("Elija una de las opciones: ");
-
-                        opcionDeAgrego= Herramientas.nextInt();
-
-                        switch (opcionDeAgrego){
-                            case 1:
                                 credito.agregarDinero();
                                 break;
-                            case 2:
-                                credito.retirarDinero();
-                                break;
                             case 3:
-
-                                break;
-                            case 4:
-                                cliente.versolicitudespropias();
-                                break;
-                            case 5:
-                                cliente.solicitarTarjetaCredito();
-                                break;
-                            case 6:
                                 System.out.println("Volviendo al menú principal. . .");
                                 break;
                             default:
                                 System.out.println("Opción no valida.");
                         }
-                    }while(opcionDeAgrego != 3);
+                    }while(opcionDeRetiro != 3);
+                    break;
+                case 2:
+                    int opcionDeAgrego;
+                    do {
+                        System.out.println("Usted ha seleccionado agregar dinero.");
+                        System.out.println("1.-Agregar de Debito.");
+                        if (cliente.tarjetasCredito != null) {
+                            System.out.println("2.-Agregar de Crédito.");
+                        }
+                        System.out.println("3.-Regresar al menú principal.");
+                        System.out.println("Elija una de las opciones: ");
+
+                        opcionDeAgrego = Herramientas.nextInt();
+
+                        switch (opcionDeAgrego) {
+                            case 1:
+                                cliente.debito.agregarDinero();
+                                break;
+                            case 2:
+                                credito.agregarDinero();
+                                break;
+                            case 3:
+                                System.out.println("Volviendo al menú principal...");
+                                break;
+                            default:
+                                System.out.println("Opción no válida.");
+                        }
+                    } while (opcionDeAgrego != 3);
                     break;
                 case 3:
+                    cliente.versolicitudespropias();
+                    break;
+                case 4:
+                    cliente.solicitarTarjetaCredito();
+                    break;
+                case 5:
+                    cliente.debito.mostrarSaldo();
+                    break;
+                case 6:
                     System.out.println("Sesión cerrada...");
                     UsuarioActivo.getInstance().cerrarSesionActiva();
                     ejecutarMenuBanco();
                     break;
                 default:
-                    System.out.println("Opción no valida. Elija cualquiera en el rango de 1 a 2.");
+                    System.out.println("Opción no valida. Elija cualquiera en el rango de 1 a 5.");
             }
-        } while (opcionCliente != 3);
+        } while (opcionCliente != 5);
     }
     private void seleccionarMenuGerente() {
         int opcionGerente = 0;
@@ -185,10 +197,10 @@ public class Menu {
                                 Cliente.registrarClienteEnSucursal(usuarioActual);
                                 break;
                             case 2:
-
+                                Empleado.RegistrarCapturista(usuarioActual);
                                 break;
                             case 3:
-
+                                Empleado.RegistrarEjecutivo(usuarioActual);
                                 break;
                             case 4:
                                 System.out.println("Ingrese la contraseña de seguridad antes de continuar: ");
@@ -298,6 +310,7 @@ public class Menu {
                         System.out.println("2.-Capturista.");
                         System.out.println("3.-Ejecutivo.");
                         System.out.println("4.-Inversionista.");
+                        System.out.println("5.- Mostrar todos los empleados");
                         System.out.println("5.-Salir.");
                         System.out.println("Seleccione una opción: ");
 
@@ -309,21 +322,24 @@ public class Menu {
                                 Cliente.MostrarClientes(UsuarioActivo.getInstance().getUsuarioActual().getSucursales());
                                 break;
                             case 2:
-
+                                Empleado.MostrarCapturistas(UsuarioActivo.getInstance().getUsuarioActual().getSucursales());
                                 break;
                             case 3:
-
+                                Empleado.MostrarEjecutivos(UsuarioActivo.getInstance().getUsuarioActual().getSucursales());
                                 break;
                             case 4:
 
                                 break;
                             case 5:
+                                Empleado.MostrarTodosEmpleados(UsuarioActivo.getInstance().getUsuarioActual().getSucursales());
+                                break;
+                            case 6:
                                 System.out.println("\nSaliendo de mostrar en especifico. . .");
                                 break;
                             default:
                                 System.out.println("Opcion invalida. Vuelva a intentarlo");
                         }
-                    }while(opcionMostrar != 5);
+                    }while(opcionMostrar != 6);
                     break;
                 case 5:
                     empleado.revisarSolicitudes();
