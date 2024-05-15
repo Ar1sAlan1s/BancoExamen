@@ -25,11 +25,9 @@ public class Menu {
     private Empleado Gerente;
     private Empleado Ejecutivo;
     private Empleado Capturista;
-
     //Verificar el inicio de sesión
     public void iniciarSesion() {
         boolean sonDatosCorrectos = false;
-
         do {
             System.out.println("*Bienvenido al inicio de sesión del banco*");
             System.out.println("Inicie sesión para continuar.");
