@@ -4,14 +4,17 @@ import Banco.Utils.Herramientas;
 import Banco.Utils.HistorialTransaccion;
 import Tarjetas.Credito;
 import Tarjetas.Debito;
+import Tarjetas.Utils.Solicitud;
 import Usuarios.Cliente;
 import Usuarios.Empleado;
 import Usuarios.Inversionista;
 import Usuarios.Usuario;
+import Usuarios.Utils.Rol;
 import Usuarios.Utils.UsuarioActivo;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -21,7 +24,7 @@ public class Menu {
     private Debito debito;
     private String contraseñaSeguridad = "B@nc0";
     private Usuario usuarioActual;
-
+public ArrayList<Solicitud>todassolis=new ArrayList<>();
     //Verificar el inicio de sesión
     public void iniciarSesion() {
         boolean sonDatosCorrectos = false;
@@ -196,7 +199,13 @@ public class Menu {
                                         }
                                     }
                                     break;
+                                    case 3:
+                                        cliente.tarjetasCredito.get(opcionDetarjeta).mostrarTarjeta();
+                                        break;
+                                    case 4:
+                                        break;
                             }
+
 
                         }while (opcion !=4);
                     } while (opcionDetarjeta != 4);
@@ -206,7 +215,11 @@ public class Menu {
                         cliente.verSolicitudesTarjetaCreditoClientes(cliente);
                     break;
                 case 4:
-                    cliente.solicitarTarjetaCredito(cliente);
+                   Solicitud soli= cliente.solicitarTarjetaCredito(cliente);
+                    if (soli != null) {
+                        todassolis.add(soli);
+                    }
+
                     break;
                 case 5:
                     System.out.println("Sesión cerrada...");
@@ -220,6 +233,7 @@ public class Menu {
     }
     private void seleccionarMenuGerente() {
         int opcionGerente = 0;
+        Usuario usuario=usuarioActual;
         do{
             System.out.println("MENU GERENTE");
             System.out.println("1.-Registrar Cliente, Capturista, Ejecutivo o Inversionista");
@@ -345,7 +359,7 @@ public class Menu {
 
                         switch (opcionModificar){
                             case 1:
-                                
+
                                 break;
                             case 2:
 
@@ -406,7 +420,26 @@ public class Menu {
                     }while(opcionMostrar != 6);
                     break;
                 case 5:
-
+                        for (Solicitud solicitud:todassolis){
+                            int i=0;
+                            System.out.println("No de solicitud:"+i);
+                            solicitud.mostrarSolicitud(UsuarioActivo.getUsuarioActual().getSucursales());
+                            i++;
+                        }
+                    System.out.println("Ingrese el indice que de la solicitud a revisar,Si no tiene opcion Ingrese el siguiente numero 1212");
+                    int indice = sc.nextInt();
+                    if(indice == 1212){
+                        System.out.println("\nSaliendo de revisar la solicitud. . .");
+                        break;
+                    }
+                    sc.nextLine();
+                    System.out.println("Ingrese A si la APRUEBA o R si la RECHAZA");
+                    String opcion= sc.nextLine();
+                    if(opcion.equals("A")){
+                        todassolis.get(indice).aprobarSolicitud();
+                    }else{
+                        todassolis.get(indice).rechazarSolicitud();
+                    }
                     break;
                 case 6:
                     HistorialTransaccion.mostrarHistorialPorSucursal(usuarioActual.getSucursales(), usuarioActual);
@@ -430,7 +463,8 @@ public class Menu {
             System.out.println("2.-Eliminar Cliente");
             System.out.println("3.-Modificar Cliente");
             System.out.println("4.-Mostrar Clientes");
-            System.out.println("5.-Salir del Menu");
+            System.out.println("5.-Aceptar solicitudes");
+            System.out.println("6.-Salir del Menu");
             System.out.println("Seleccione el proceso a realizar: ");
 
             opcionEjecutivo = Herramientas.nextInt();
@@ -450,7 +484,7 @@ public class Menu {
                 case 4:
                     Cliente.MostrarClientes(UsuarioActivo.getInstance().getUsuarioActual().getSucursales());
                     break;
-                case 5:
+                case 6:
                     System.out.println("\nCerrando la sesión actual. Redireccionando al inicio de sesión.");
                     UsuarioActivo.getInstance().cerrarSesionActiva();
                     ejecutarMenuBanco();

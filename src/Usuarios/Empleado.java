@@ -186,4 +186,7 @@ public class Empleado extends Usuario {
             System.out.println("Solo el gerente puede eliminar ejecutivos.");
         }
     }
+    public void revisarSolicitudes(){
+
+    }
 }

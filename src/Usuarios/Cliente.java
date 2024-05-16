@@ -52,7 +52,7 @@ Cliente extends Usuario {
 
             Sucursales sucursal = usuario.getSucursales();
 
-            Cliente cliente = new Cliente(nombre,apellido,fechaNacimiento,nombreUsuario,contraseña,ciudad,estado,RFC,Curp,direccion,sucursal,Rol.Cliente);
+            Cliente cliente = new Cliente(nombre, apellido, fechaNacimiento, nombreUsuario, contraseña, ciudad, estado, RFC, Curp, direccion, sucursal, Rol.Cliente);
             if (!Banco.listaUsuarios.containsKey(Rol.Cliente)) {
                 Banco.listaUsuarios.put(Rol.Cliente, new ArrayList<>());
             }
@@ -83,6 +83,7 @@ Cliente extends Usuario {
             }
         }
     }
+
     public static void eliminarCliente(String nombreUsuario) {
         Usuario usuarioActual = UsuarioActivo.getInstance().getUsuarioActual();
 
@@ -132,131 +133,212 @@ Cliente extends Usuario {
         return id;
     }
 
-    public String creadorSolicitudesString() {
-        return getUsuario() + LocalDate.now() + String.valueOf(debito.getSaldo()) + String.valueOf(getId());
-    }
 
-
-     public Debito getDebito() {
+    public Debito getDebito() {
         return debito;
     }
-    public void mostrarTarjetas(){
+
+    public void mostrarTarjetas() {
         System.out.println();
-        if (tarjetasCredito.isEmpty()){
+        if (tarjetasCredito.isEmpty()) {
             System.out.println("No tienes tarjetas de credito");
-        }else{
-        for (Credito credito : tarjetasCredito) {
-            System.out.println();
-            credito.mostrarTarjeta();
-        }
+        } else {
+            for (Credito credito : tarjetasCredito) {
+                System.out.println();
+                credito.mostrarTarjeta();
+            }
         }
     }
-    public void solicitarTarjetaCredito(Cliente cliente) {
-        if(!revisarSolicitud(cliente)){
+
+    public Solicitud solicitarTarjetaCredito(Cliente cliente) {
+        if (!revisarSolicitud(cliente)) {
             System.out.println("Tienes una solicitud pendiente.");
-            return;
+            return null;
         }
         boolean bandS = true;
         boolean bandP = true;
         boolean bandO = true;
         Scanner leer = new Scanner(System.in);
         for (Credito credito : tarjetasCredito) {
-            if (credito.getTipoCredito()==TiposCredito.simplicity) {
+            if (credito.getTipoCredito() == TiposCredito.simplicity) {
                 bandS = false;
             }
-            if (credito.getTipoCredito()==TiposCredito.platino) {
+            if (credito.getTipoCredito() == TiposCredito.platino) {
                 bandP = false;
             }
-            if (credito.getTipoCredito()==TiposCredito.oro){
+            if (credito.getTipoCredito() == TiposCredito.oro) {
                 bandO = false;
             }
         }
         if (!bandS && !bandP && !bandO) {
             System.out.println("Tienes todas las tarjetas, ya no puedes solicitar mas.");
-            return;
+            return null;
         }
-        if(debito.getSaldo() >= 200000 && bandO){
+        if (debito.getSaldo() >= 200000 && bandO) {
             System.out.printf("Tu saldo es de $%.2f, puedes solicitar la tarjeta oro.\n", debito.getSaldo());
             System.out.println("Deseas solicitarla Y/N: ");
             String opcion = leer.nextLine();
-            if(opcion.equalsIgnoreCase("Y")){
-                new Solicitud(TiposCredito.oro,(Cliente)UsuarioActivo.getUsuarioActual());
+            if (opcion.equalsIgnoreCase("Y")) {
+                Solicitud solicitud=new Solicitud(TiposCredito.oro, (Cliente) UsuarioActivo.getUsuarioActual());
                 System.out.println("Tarjeta solicitada satisfactoriamente.");
-            } else{
+                return  solicitud;
+            } else {
                 System.out.println("Tarjeta no solicitada. ");
             }
-        }
-        else if(debito.getSaldo() >= 100000 && bandP){
+        } else if (debito.getSaldo() >= 100000 && bandP) {
             System.out.printf("Tu saldo es de $%.2f, puedes solicitar la tarjeta platino.\n", debito.getSaldo());
             System.out.println("Deseas solicitarla Y/N: ");
             String opcion = leer.nextLine();
-            if(opcion.equalsIgnoreCase("Y")){
-                new Solicitud(TiposCredito.platino,(Cliente)UsuarioActivo.getUsuarioActual());
+            if (opcion.equalsIgnoreCase("Y")) {
+                Solicitud solicitud=new Solicitud(TiposCredito.platino, (Cliente) UsuarioActivo.getUsuarioActual());
+
                 System.out.println("Tarjeta solicitada satisfactoriamente.");
+                return solicitud;
             } else {
                 System.out.println("Tarjeta no solicitada. ");
             }
-        }
-        else if (debito.getSaldo() >= 50000 && bandS){
+        } else if (debito.getSaldo() >= 50000 && bandS) {
             System.out.printf("Tu saldo es de $%.2f, puedes solicitar la tarjeta simplicity.\n", debito.getSaldo());
             System.out.println("Deseas solicitarla Y/N: ");
             String opcion = leer.nextLine();
-            if(opcion.equalsIgnoreCase("Y")){
-                new Solicitud(TiposCredito.simplicity,(Cliente)UsuarioActivo.getUsuarioActual());
+            if (opcion.equalsIgnoreCase("Y")) {
+                Solicitud solicitud=new Solicitud(TiposCredito.simplicity, (Cliente) UsuarioActivo.getUsuarioActual());
+
                 System.out.println("Tarjeta solicitada satisfactoriamente.");
+                return  solicitud;
             } else {
                 System.out.println("Tarjeta no solicitada. ");
             }
-        }
-        else {
+        } else {
             System.out.println("Actualmente no puedes solicitar ninguna tarjeta de credito.");
         }
+        return null;
     }
-    public boolean revisarSolicitud(Cliente cliente){
+
+    public boolean revisarSolicitud(Cliente cliente) {
         boolean bandS = true;
         boolean bandP = true;
         boolean bandO = true;
-        for (Solicitud solicitud: Solicitudes) {
-            if (solicitud.getStatus().equals("En proceso")&&solicitud.getIdCliente()==cliente.getId()) {
+        for (Solicitud solicitud : Solicitudes) {
+            if (solicitud.getStatus().equals("En proceso") && solicitud.getIdCliente() == cliente.getId()) {
                 return false;
             }
         }
         return true;
     }
-    public void imprimirIndiceTarjetaCredito(){
-        for (Credito tarjeta : tarjetasCredito){
+
+    public void imprimirIndiceTarjetaCredito() {
+        for (Credito tarjeta : tarjetasCredito) {
             System.out.println("[" + tarjetasCredito.indexOf(tarjeta) + "]");
             tarjeta.mostrarTarjeta();
         }
     }
+
     public void verSolicitudesTarjetaCreditoClientes(Cliente cliente) {
-        if(!Solicitudes.isEmpty()){
+        if (!Solicitudes.isEmpty()) {
             System.out.println("** Solicitudes de tarjeta **");
-            for (Solicitud solicitud: Solicitudes){
-               if(cliente.getId()==solicitud.getIdCliente()){
-                   System.out.println("Numero de solicitud: "+ Solicitudes.indexOf(solicitud));
-                solicitud.mostrarSolicitud(cliente);
-                System.out.println();
-               }
-            }
-        }else{
-            System.out.println("No tiene solicitudes a la espera");
-        }
-
-    }
-
-    public void verSolicitudesTarjetaCreditoEmpleados(Cliente cliente) {
-        if(!Solicitudes.isEmpty()){
-            System.out.println("** Solicitudes de tarjeta **");
-            for (Solicitud solicitud: Solicitudes){
-                if(solicitud.getStatus().equals("En proceso")&&cliente.getSucursales()==solicitud.getSucursal()){
-                    System.out.println("Numero de solicitud: "+ Solicitudes.indexOf(solicitud));
+            for (Solicitud solicitud : Solicitudes) {
+                if (cliente.getId() == solicitud.getIdCliente()) {
+                    System.out.println("Numero de solicitud: " + Solicitudes.indexOf(solicitud));
                     solicitud.mostrarSolicitud(cliente);
                     System.out.println();
                 }
             }
+        } else {
+            System.out.println("No tiene solicitudes a la espera");
         }
 
+    }
+    public void verSolicitudesTarjetaCreditoE() {
+        if (!Solicitudes.isEmpty()) {
+            System.out.println("** Solicitudes de tarjeta **");
+            for (Solicitud solicitud : Solicitudes) {
+                if (solicitud.getStatus().equals("En proceso")) {
+                    System.out.println("Numero de solicitud: " + Solicitudes.indexOf(solicitud));
+
+                    System.out.println();
+                }
+            }
+        }
+    }
+
+    public ArrayList<Credito> getTarjetasCredito() {
+        return tarjetasCredito;
+    }
+
+    public ArrayList<Solicitud> getSolicitudes() {
+        return Solicitudes;
+    }
+    public void mostrartodassolis(Sucursales sucursal){
+        for (int i=0;i<Solicitudes.size();i++){
+            if (getSucursales()==sucursal) {
+                System.out.println("indice:" + i);
+                System.out.printf("id:%d\n", Solicitudes.get(i).getIdCliente());
+                System.out.printf("uuario:%s\n", Solicitudes.get(i).getCliente().getUsuario());
+                System.out.printf("nombre:%s\n", Solicitudes.get(i).getCliente().getNombre());
+                System.out.printf("apellidos:%s\n", Solicitudes.get(i).getCliente().getApellidos());
+                System.out.printf("status:%s\n", Solicitudes.get(i).getCliente().getStatus());
+                System.out.printf("saldo:%.2f\n", Solicitudes.get(i).getSaldoDebito());
+                System.out.printf("tipo:%s\n", Solicitudes.get(i).getTipoCredito());
+                System.out.printf("Fecha:%s\n", Solicitudes.get(i).getFechaDeRealizacion().toString());
+            }
+        }
+    }
+    ////////////////////////////////////setters para modificaciones/////////////////
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
+    }
+
+    public void setFechaNacimiento(LocalDate fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public void setRFC(String RFC) {
+        this.RFC = RFC;
+    }
+
+    public void setCurp(String Curp) {
+        this.Curp = Curp;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public void setRol(Rol rol) {
+        this.rol = rol;
+    }
+
+    public void setSucursales(Sucursales sucursales) {
+        this.sucursales = sucursales;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setDebito(Debito debito) {
+        this.debito = debito;
     }
 
 }

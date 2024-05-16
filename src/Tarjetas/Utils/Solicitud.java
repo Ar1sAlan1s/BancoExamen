@@ -1,5 +1,6 @@
 package Tarjetas.Utils;
 
+import Tarjetas.Credito;
 import Usuarios.Cliente;
 import Usuarios.Utils.Sucursales;
 
@@ -20,6 +21,7 @@ public class Solicitud {
         this.sucursal=cliente.getSucursales();
         this.saldoDebito=cliente.debito.getSaldo();
         this.status="En revision";
+        this.cliente=cliente;
         cliente.Solicitudes.add(this);
     }
     public void mostrarSolicitud(Cliente cliente) {
@@ -30,6 +32,18 @@ public class Solicitud {
         System.out.println("Saldo en tarjeta de debito al generar solicitud: $" + saldoDebito);
         System.out.println("Tipo de tarjeta que solicita: " + tipoCredito);
         System.out.println("Fecha de solicitud: " + fechaDeRealizacion);
+    }
+    public void mostrarSolicitud(Sucursales sucursalEnviada) {
+        if (cliente.getSucursales()==sucursalEnviada&&status.equals("En revision")) {
+
+            System.out.println("Id del solicitante: " + cliente.getId());
+            System.out.println("Usuario de solicitante: " + cliente.getUsuario());
+            System.out.println("Nombre de solicitante: " + cliente.getNombre() + cliente.getApellidos());
+            System.out.println("Estatus: " + status);
+            System.out.println("Saldo en tarjeta de debito al generar solicitud: $" + saldoDebito);
+            System.out.println("Tipo de tarjeta que solicita: " + tipoCredito);
+            System.out.println("Fecha de solicitud: " + fechaDeRealizacion);
+        }
     }
 
     public TiposCredito getTipoCredito() {
@@ -59,4 +73,14 @@ public class Solicitud {
     public LocalDate getFechaDeRealizacion() {
         return fechaDeRealizacion;
     }
+    public void aprobarSolicitud() {
+        cliente.getTarjetasCredito().add(new Credito(cliente.getNombre(), cliente.getApellidos(),tipoCredito ));
+        this.status = "Aprobada";
+    }
+
+    public void rechazarSolicitud() {
+        this.status = "Rechazada";
+    }
+
+
 }
